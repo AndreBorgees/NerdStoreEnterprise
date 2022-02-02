@@ -30,6 +30,7 @@ namespace NSE.Catalogo.API.Controllers
         [HttpGet("catalog/products/{id}")]
         public async Task<Product> GetById(Guid id)
         {
+            throw new Exception("Erro");
             return await _productRepository.GetById(id);
         }
     }

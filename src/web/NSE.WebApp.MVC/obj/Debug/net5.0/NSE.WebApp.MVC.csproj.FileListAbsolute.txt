@@ -195,7 +195,6 @@ C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\Sys
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Memory.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.Http.dll
-C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.Http.Json.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.HttpListener.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.Mail.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Net.NameResolution.dll
@@ -226,7 +225,6 @@ C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\Sys
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Resources.Reader.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Resources.ResourceManager.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Resources.Writer.dll
-C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Runtime.CompilerServices.Unsafe.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Runtime.CompilerServices.VisualC.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Runtime.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Runtime.Extensions.dll
@@ -260,8 +258,6 @@ C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\Sys
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.Encoding.CodePages.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.Encoding.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.Encoding.Extensions.dll
-C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.Encodings.Web.dll
-C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.Json.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Text.RegularExpressions.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Threading.Channels.dll
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\refs\System.Threading.dll
@@ -367,3 +363,8 @@ C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\System.I
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\obj\Debug\net5.0\Razor\Views\Shared\Components\Summary\Default.cshtml.g.cs
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\obj\Debug\net5.0\Razor\Views\Catalog\Index.cshtml.g.cs
 C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\obj\Debug\net5.0\Razor\Views\Catalog\ProductDetail.cshtml.g.cs
+C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\Refit.dll
+C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\System.Net.Http.Json.dll
+C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Projetos\NerdStoreEnterprise\src\web\NSE.WebApp.MVC\bin\Debug\net5.0\System.Text.Json.dll
