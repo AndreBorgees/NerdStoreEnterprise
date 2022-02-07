@@ -8,15 +8,19 @@ namespace NSE.WebApp.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public IActionResult Index()
+        [Route("system-unavailable")]
+        public IActionResult SystemUnavailable()
         {
-            return View();
+            var modelErro = new ErrorViewModel
+            {
+                Message = "O sistema está temporariamente indisponível, isto pode ocorrer em momentos de sobrecarga de usuários.",
+                Title = "Sistema indisponível",
+                ErrorCode = 500
+            };
+
+            return View("Error", modelErro);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [Route("error/{id:length(3,3)}")]
         public IActionResult Error(int id)
