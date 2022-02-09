@@ -1,23 +1,34 @@
 ﻿using NSE.Core.DomainObjects;
+using System;
 
 namespace NSE.Cliente.API.Models
 {
     public class Customer : Entity, IAggregateRoot
     {
-        public Customer(string name, string email, string cpf)
+        protected Customer(){}
+        public string Name { get; private set; }
+        public Email Email { get; private set; }
+        public Cpf Cpf { get; private set; }
+        public bool isRemoved { get; private set; }
+        public Address Address { get; private set; }
+
+        public Customer(Guid id, string name, string email, string cpf)
         {
+            Id = id;
             Name = name;
-            Email = email;
-            Cpf = cpf;
+            Email = new Email(email);
+            Cpf = new Cpf(cpf);
             isRemoved = false;
         }
 
-        protected Customer(){}
+        public void ChangeEmail(string email)
+        {
+            Email = new Email(email);
+        }
 
-        public string Name { get; private set; }
-        public string Email { get; private set; }
-        public string Cpf { get; private set; }
-        public bool isRemoved { get; private set; }
-        public Address Address { get; private set; }
+        public void AddAddress(Address address)
+        {
+            Address = address;
+        }
     }
 }
