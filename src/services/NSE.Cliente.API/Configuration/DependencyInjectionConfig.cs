@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSE.Cliente.API.Application.Commands;
+using NSE.Cliente.API.Application.Events;
 using NSE.Cliente.API.Data;
 using NSE.Cliente.API.Data.Repository;
 using NSE.Cliente.API.Models;
@@ -16,8 +17,10 @@ namespace NSE.Cliente.API.Configuration
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<IRequestHandler<RegisterCustomerCommand, ValidationResult>, CustomerCommandHandler>();
 
+            services.AddScoped<INotificationHandler<RegisteredCustomerEvent>, CustomerEventHandler>();
+
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<CustomersContext>();
         }
     }
-}
+}   

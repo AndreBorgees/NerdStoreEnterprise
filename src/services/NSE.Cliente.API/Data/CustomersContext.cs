@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSE.Cliente.API.Models;
 using NSE.Core.Data;
+using NSE.Core.DomainObjects;
+using NSE.Core.Mediator;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,11 +10,14 @@ namespace NSE.Cliente.API.Data
 {
     public sealed class CustomersContext : DbContext, IUnitOfWork
     {
-        public CustomersContext(DbContextOptions<CustomersContext> options)
+
+        private readonly IMediatorHandler _mediatorHandler;
+        public CustomersContext(DbContextOptions<CustomersContext> options, IMediatorHandler mediatorHandler)
             : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
+            _mediatorHandler = mediatorHandler;
         }
 
         public DbSet<Customer> Customers { get; set; }
@@ -34,7 +39,33 @@ namespace NSE.Cliente.API.Data
         {
             var success = await base.SaveChangesAsync() > 0;
 
+            if (success) await _mediatorHandler.PublishEvents(this);
+
             return success;
+        }
+    }
+
+    public static class MediatorExtensions
+    {
+        public static async Task PublishEvents<T>(this IMediatorHandler mediatorHandler, T ctx) where T : DbContext
+        {
+            var domainEntities = ctx.ChangeTracker
+                .Entries<Entity>()
+                .Where(x => x.Entity.Notificacoes != null && x.Entity.Notificacoes.Any());
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.Notificacoes)
+                .ToList();
+
+            domainEntities.ToList().ForEach(entity => entity.Entity.ClearEvent());
+
+            var tasks = domainEvents
+                .Select(async (domainEvents) =>
+                {
+                    await mediatorHandler.PublishEvent(domainEvents);
+                });
+
+            await Task.WhenAll(tasks);
         }
     }
 }
