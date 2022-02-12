@@ -10,23 +10,32 @@ namespace NSE.Cliente.API.Application.Commands
     public class CustomerCommandHandler : CommandHandler,
         IRequestHandler<RegisterCustomerCommand, ValidationResult>
     {
+
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomerCommandHandler(ICustomerRepository customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
+
         public async Task<ValidationResult> Handle(RegisterCustomerCommand message, CancellationToken cancellationToken)
         {
-            if (!message.isValid()) return message.ValidationResult;
+
+            if (!message.IsValid()) return message.ValidationResult;
 
             var customer = new Customer(message.Id, message.Name, message.Email, message.Cpf);
 
-            //validações de negócio
+            var existingCustomer = _customerRepository.GetaByCpf(customer.Cpf.Number);
 
-            //persistir no banco
-
-            if(true)
+            if (existingCustomer != null)
             {
                 AddError("Este CPF já está em uso.");
                 return ValidationResult;
             }
-          
-            return message.ValidationResult;
+
+            _customerRepository.Add(customer);
+
+            return await PersistData(_customerRepository.UnitOfWork);
         }
     }
 }

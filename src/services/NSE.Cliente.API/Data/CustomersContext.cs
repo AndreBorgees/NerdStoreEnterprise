@@ -15,7 +15,7 @@ namespace NSE.Cliente.API.Data
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<Customer> customers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
