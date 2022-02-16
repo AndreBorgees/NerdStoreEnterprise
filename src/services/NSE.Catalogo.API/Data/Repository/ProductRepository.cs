@@ -16,7 +16,7 @@ namespace NSE.Catalogo.API.Data.Repository
             _catalogContext = catalogContext;
         }
 
-        public IUnitOfWork unitOfWork => _catalogContext; 
+        public IUnitOfWork UnitOfWork => _catalogContext;
 
         public async Task<Product> GetById(Guid id)
         {

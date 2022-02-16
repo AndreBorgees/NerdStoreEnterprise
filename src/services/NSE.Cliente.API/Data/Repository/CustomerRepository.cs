@@ -15,7 +15,7 @@ namespace NSE.Cliente.API.Data.Repository
             _customersContext = customersContext;
         }
 
-        IUnitOfWork UnityOfWork => _customersContext;
+        public IUnitOfWork UnitOfWork => _customersContext;
 
         public void Add(Customer customer)
         {
