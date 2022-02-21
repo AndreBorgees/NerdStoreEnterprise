@@ -26,7 +26,7 @@ namespace NSE.Cliente.API.Application.Commands
 
             var customer = new Customer(message.Id, message.Name, message.Email, message.Cpf);
 
-            var existingCustomer = _customerRepository.GetaByCpf(customer.Cpf.Number);
+            var existingCustomer = await _customerRepository.GetaByCpf(customer.Cpf.Number);
 
             if (existingCustomer != null)
             {

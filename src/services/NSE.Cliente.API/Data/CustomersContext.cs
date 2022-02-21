@@ -17,9 +17,10 @@ namespace NSE.Cliente.API.Data
         public CustomersContext(DbContextOptions<CustomersContext> options, IMediatorHandler mediatorHandler)
             : base(options)
         {
+            _mediatorHandler = mediatorHandler;
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
-            _mediatorHandler = mediatorHandler;
+            
         }
 
         public DbSet<Customer> Customers { get; set; }

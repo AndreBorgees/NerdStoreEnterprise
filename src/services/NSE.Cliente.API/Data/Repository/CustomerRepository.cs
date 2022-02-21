@@ -24,12 +24,13 @@ namespace NSE.Cliente.API.Data.Repository
 
         public void Dispose()
         {
-            _customersContext?.Dispose();
+            //_customersContext?.Dispose();
         }
 
-        public async Task<Customer> GetaByCpf(string cpf)
+        public Task<Customer> GetaByCpf(string cpf)
         {
-            return await _customersContext.Customers.FirstOrDefaultAsync(c => c.Cpf.Number == cpf);
+            return _customersContext.Customers.FirstOrDefaultAsync(c => c.Cpf.Number == cpf);
+         
         }
 
         public async Task<IEnumerable<Customer>> Getall()
