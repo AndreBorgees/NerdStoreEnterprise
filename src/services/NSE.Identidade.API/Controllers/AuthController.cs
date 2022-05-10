@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EasyNetQ;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NSE.Core.Messages.Integration;
 using NSE.Identidade.API.Models;
 using NSE.WebAPI.Core.Controllers;
 using NSE.WebAPI.Core.Identity;
@@ -21,6 +23,7 @@ namespace NSE.Identidade.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly AppSettings _appSettings;
+        private IBus _bus;
 
         public AuthController(UserManager<IdentityUser> userManager,
                                 SignInManager<IdentityUser> signInManager,
@@ -47,6 +50,8 @@ namespace NSE.Identidade.API.Controllers
 
             if (result.Succeeded)
             {
+                var success = await RegisterCustomer(userRegistry);
+
                 return CustomResponse(await JWTGenerate(userRegistry.Email));
             }
 
@@ -145,6 +150,19 @@ namespace NSE.Identidade.API.Controllers
             };
 
             return response;
+        }
+
+        private async Task<ResponseMessage> RegisterCustomer(UserRegistry userRegistry)
+        {
+            var user = await _userManager.FindByEmailAsync(userRegistry.Email);
+
+            var userRegistered = new UserRegistredIntegrationEvent(Guid.Parse(user.Id), userRegistry.Name, userRegistry.Email, userRegistry.Cpf);
+
+            _bus = RabbitHutch.CreateBus(connectionString: "host=localhost:5672");
+
+             var success = await _bus.Rpc.RequestAsync<UserRegistredIntegrationEvent, ResponseMessage>(userRegistered);
+
+            return success;
         }
 
         private static long ToUnixEpochDate(DateTime date)
