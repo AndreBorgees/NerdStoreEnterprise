@@ -24,8 +24,7 @@ namespace NSE.Cliente.API.Services
             _bus = bus;
         }
 
-        //Tarefas em background rodando
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        private void SetResponder()
         {
             //_bus = RabbitHutch.CreateBus(connectionString: "host=localhost:5672");
 
@@ -33,9 +32,21 @@ namespace NSE.Cliente.API.Services
             //    new ResponseMessage(await RegisterCustomer(request)));
 
             _bus.RespondAsync<UserRegistredIntegrationEvent, ResponseMessage>(async request =>
-                await RegisterCustomer(request));
+               await RegisterCustomer(request));
 
+            _bus.Advanced.Connected += OnConnect;
+        }
+
+        //Tarefas em background rodando
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {           
+            SetResponder();
             return Task.CompletedTask;
+        }
+
+        private void OnConnect(object s, EventArgs e)
+        {
+            SetResponder();
         }
 
         public async Task<ResponseMessage> RegisterCustomer(UserRegistredIntegrationEvent message)
