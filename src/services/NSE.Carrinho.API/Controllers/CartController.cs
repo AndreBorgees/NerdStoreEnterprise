@@ -39,9 +39,10 @@ namespace NSE.Carrinho.API.Controllers
             else
                 ExistingCart(cart, item);
 
+            ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
-            await InsertData();
+            await PersistData();
             return CustomResponse();
         }
 
@@ -60,7 +61,7 @@ namespace NSE.Carrinho.API.Controllers
             _cartContext.CartItems.Update(cartItem);
             _cartContext.CartCustomer.Update(cart);
 
-            await InsertData();
+            await PersistData();
             return CustomResponse();
         }
 
@@ -78,7 +79,7 @@ namespace NSE.Carrinho.API.Controllers
             _cartContext.CartItems.Remove(cartItem);
             _cartContext.CartCustomer.Update(cart);
 
-            await InsertData();
+            await PersistData();
             return CustomResponse();
         }
 
@@ -143,7 +144,7 @@ namespace NSE.Carrinho.API.Controllers
             return cartItem;
         }
 
-        private async Task InsertData()
+        private async Task PersistData()
         {
             var result = await _cartContext.SaveChangesAsync();
             if (result <= 0) AddProcessingError("Não foi possível persistir os dados no banco");
