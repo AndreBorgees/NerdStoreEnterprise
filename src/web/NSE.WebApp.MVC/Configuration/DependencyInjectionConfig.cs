@@ -20,10 +20,17 @@ namespace NSE.WebApp.MVC.Configuration
         {
 
             services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
+
+            #region HttpService
 
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
-            services.AddHttpClient<IAuthService, AuthService>();
+            services.AddHttpClient<IAuthService, AuthService>()
+                .AddPolicyHandler(PollyExtensions.WaitTry())
+                .AddTransientHttpErrorPolicy(
+                 p => p.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30)));
 
             services.AddHttpClient<ICatalogService, CatalogService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
@@ -33,9 +40,11 @@ namespace NSE.WebApp.MVC.Configuration
                 .AddTransientHttpErrorPolicy(
                  p => p.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30)));
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddScoped<IAspNetUser, AspNetUser>();
+            services.AddHttpClient<ICartService, CartService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+               .AddPolicyHandler(PollyExtensions.WaitTry())
+               .AddTransientHttpErrorPolicy(
+                p => p.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30)));
 
             #region Refit
             //services.AddHttpClient("Refit", options =>
@@ -46,9 +55,11 @@ namespace NSE.WebApp.MVC.Configuration
             //   .AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
             #endregion
 
+            #endregion
         }
     }
 
+    #region PollyExtensions
     public class PollyExtensions
     {
         public static AsyncRetryPolicy<HttpResponseMessage> WaitTry()
@@ -71,5 +82,6 @@ namespace NSE.WebApp.MVC.Configuration
             return retry;
         }
     }
+    #endregion
+
 }
- 
