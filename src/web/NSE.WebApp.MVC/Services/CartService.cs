@@ -1,8 +1,9 @@
-﻿using NSE.WebApp.MVC.Models;
+﻿using Microsoft.Extensions.Options;
+using NSE.WebApp.MVC.Extensions;
+using NSE.WebApp.MVC.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using NSE.WebApp.MVC.Extensions;
 
 namespace NSE.WebApp.MVC.Services
 {
@@ -10,9 +11,10 @@ namespace NSE.WebApp.MVC.Services
     {
         private readonly HttpClient _httpClient;
 
-        public CartService(HttpClient httpClient)
+        public CartService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri(settings.Value.CartUrl);
         }
 
         public async Task<CartViewModel> GetCart()
@@ -30,7 +32,7 @@ namespace NSE.WebApp.MVC.Services
 
             var response = await _httpClient.PostAsync("/cart/", contentItem);
 
-            if (HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
+            if (!HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
 
             return ReturnOk();
         }
@@ -41,7 +43,7 @@ namespace NSE.WebApp.MVC.Services
 
             var response = await _httpClient.PutAsync($"/cart/{productItemViewModel.ProductId}", contentItem);
 
-            if(HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
+            if(!HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
 
             return ReturnOk();
         }
@@ -50,7 +52,7 @@ namespace NSE.WebApp.MVC.Services
         {
             var response = await _httpClient.DeleteAsync($"/cart/{productId}");
 
-            if (HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
+            if (!HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
 
             return ReturnOk();
         }

@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace NSE.WebApp.MVC.Controllers
 {
-    public class MainController: Controller
+    public class MainController : Controller
     {
         protected bool HasErrorsResponse(ResponseResult responseResult)
         {
-            if(responseResult != null && responseResult.Errors.Messages.Any())
+            if (responseResult != null && responseResult.Errors.Messages.Any())
             {
                 foreach (var message in responseResult.Errors.Messages)
                 {
@@ -19,6 +19,16 @@ namespace NSE.WebApp.MVC.Controllers
             }
 
             return false;
+        }
+
+        protected void HandleErrorsResponse(string message)
+        {
+            ModelState.AddModelError(string.Empty, message);
+        }
+
+        protected bool IsValid()
+        {
+            return ModelState.ErrorCount == 0;
         }
     }
 }

@@ -69,6 +69,8 @@ namespace NSE.Carrinho.API.Model
         {
             item.UpdateUnits(units);
             UpdateItem(item);
+
+            CalculateCartPrice();
         }
 
         internal void RemoveItem(CartItem item)

@@ -39,7 +39,7 @@
                                                             <img src="~/images/produtos/@item.Image" alt="@item.Name" class="img-sm">
                                                         </div>
                                                         <figcaption class="info">
-                                                            <a asp-controller="Catalogo" asp-action="ProductDetail" asp-route-id="@item.ProductId"><h6 style="padding-top: 10px" class="title text-dark">@item.Name</h6></a>
+                                                            <a asp-controller="Catalog" asp-action="ProductDetail" asp-route-id="@item.ProductId"><h6 style="padding-top: 10px" class="title text-dark">@item.Name</h6></a>
                                                             <p class="text-muted small">@this.UnitsPerProduct(item.Quantity)</p>
                                                         </figcaption>
                                                     </figure>
@@ -50,13 +50,13 @@
                                                         <small class="text-muted"> @this.FormatCoin(item.Price) cada</small>
                                                     </div>
                                                 </td>
-                                                <form method="post" asp-controller="Carrinho" asp-action="AtualizarItemCarrinho">
+                                                <form method="post" asp-controller="Cart" asp-action="UpdateCartItem">
                                                 <td>
 
-                                                    <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProductId" />
+                                                    <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductId" />
 
                                                     <div class="text-left">
-                                                        <select id="Quantidade" name="Quantidade" style="width: 80px" class="form-control">
+                                                        <select id="Quantity" name="Quantity" style="width: 80px" class="form-control">
                                                                 @{
                                                                     @Html.Raw(this.SelectOptionsPerQuantiry(5, item.Quantity))
                                                                 }
@@ -74,10 +74,10 @@
                                                 </td>
                                                 </form>
                                                 <td>
-                                                    <form method="post" asp-controller="Carrinho" asp-action="RemoverItemCarrinho">
+                                                    <form method="post" asp-controller="Cart" asp-action="RemoveCartItem">
                                                         <div>
 
-                                                            <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProductId" />
+                                                            <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductId" />
 
                                                             <button type="submit" class="btn btn-danger">
                                                                 <i class="fas fa-trash-alt"></i>
@@ -95,7 +95,7 @@
 
                             <div class="card-body border-top">
                                 <a href="#" class="btn btn-primary float-md-right"> Finalizar Compra <i class="fa fa-chevron-right"></i> </a>
-                                <a asp-controller="Catalogo" asp-action="Index" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continuar Comprando </a>
+                                <a asp-controller="Catalog" asp-action="Index" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continuar Comprando </a>
                             </div>
                         </div>
 
@@ -183,7 +183,7 @@
                             </svg>
                             <br /><br />
                             <h4>Seu carrinho está vazio</h4>
-                            <h5>Vá para a <a asp-controller="Catalogo">página inicial</a> e confira nossos produtos. <br />Quando encontrar um que goste clique no botão adicionar ao carrinho ;)</h5>
+                            <h5>Vá para a <a asp-controller="Catalog">página inicial</a> e confira nossos produtos. <br />Quando encontrar um que goste clique no botão adicionar ao carrinho ;)</h5>
                         </div>
                     </div>
                 </div>

@@ -34,12 +34,11 @@ namespace NSE.Carrinho.API.Controllers
         {
             var cart = await GetCartCustomer();
 
-            if (cart != null)
+            if (cart == null)
                 NewCart(item);
             else
                 ExistingCart(cart, item);
 
-            ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
             await PersistData();
@@ -55,7 +54,6 @@ namespace NSE.Carrinho.API.Controllers
 
             cart.UpdateUnits(cartItem, item.Quantity);
 
-            ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
             _cartContext.CartItems.Update(cartItem);
@@ -75,6 +73,8 @@ namespace NSE.Carrinho.API.Controllers
 
             ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
+
+            cart.RemoveItem(cartItem);
 
             _cartContext.CartItems.Remove(cartItem);
             _cartContext.CartCustomer.Update(cart);
@@ -135,7 +135,7 @@ namespace NSE.Carrinho.API.Controllers
             var cartItem = await _cartContext.CartItems
                 .FirstOrDefaultAsync(i => i.CartId == cart.Id && i.ProductId == productId);
 
-            if (cartItem != null || !cart.ExistingCartItem(cartItem))
+            if (cartItem == null || !cart.ExistingCartItem(cartItem))
             {
                 AddProcessingError("O item não está no carrinho");
                 return null;
