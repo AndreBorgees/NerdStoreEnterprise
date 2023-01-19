@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using NSE.Core.Comunication;
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 using System;
@@ -7,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Services
 {
+    public interface IAuthService
+    {
+        Task<UserResponseLogin> Login(UserLogin userLogin);
+        Task<UserResponseLogin> Registry(UserRegistry userRegistry);
+    }
     public class AuthService : Service, IAuthService
     {
         private readonly HttpClient _httpClient;

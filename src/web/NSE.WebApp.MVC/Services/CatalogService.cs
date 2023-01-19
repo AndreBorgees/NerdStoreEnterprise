@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Services
 {
+    public interface ICatalogService
+    {
+        Task<IEnumerable<ProductViewModel>> GetAll();
+        Task<ProductViewModel> GetById(Guid id);
+    }
+
     public class CatalogService :  Service, ICatalogService
     {
         private readonly HttpClient _httpClient;
