@@ -17,8 +17,6 @@ namespace NSE.Core.Messages
         public virtual bool IsValid()
         {
             throw new NotImplementedException();
-
-
         }
     }
 }

@@ -14,7 +14,9 @@ namespace NSE.Bff.Compras.Services
         Task<ResponseResult> AddItemCart(CartItenDTO cartItem);
         Task<ResponseResult> UpdateItemCart(Guid productId, CartItenDTO cart);
         Task<ResponseResult> RemoveItemCart(Guid productId);
+        Task<ResponseResult> ApplyVoucherCart(VoucherDTO voucher);
     }
+
     public class CartService : Service, ICartService
     {
         private readonly HttpClient _httpClient;
@@ -24,7 +26,6 @@ namespace NSE.Bff.Compras.Services
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri(settings.Value.CartUrl);
         }
-
 
         public async Task<CartDTO> GetCart()
         {
@@ -61,6 +62,17 @@ namespace NSE.Bff.Compras.Services
         public async Task<ResponseResult> RemoveItemCart(Guid productId)
         {
             var response = await _httpClient.DeleteAsync($"/cart/{productId}");
+
+            if (!ProcessErrorsResponse(response)) return await DeserializeObjectResponse<ResponseResult>(response);
+
+            return ReturnOk();
+        }
+
+        public async Task<ResponseResult> ApplyVoucherCart(VoucherDTO voucher)
+        {
+            var itemContent = GetContent(voucher);
+
+            var response = await _httpClient.PostAsync("/cart/apply-voucher/", itemContent);
 
             if (!ProcessErrorsResponse(response)) return await DeserializeObjectResponse<ResponseResult>(response);
 
