@@ -16,6 +16,10 @@ namespace NSE.Carrinho.API.Model
         public List<CartItem> Items { get; set; } = new List<CartItem>();
         public ValidationResult ValidationResult { get; set; }
 
+        public bool UsedVoucher { get; private set; }
+        public decimal Discount { get; private set; }
+        public Voucher Voucher { get; private set; }
+
         public CartCustomer(Guid customerId)
         {
             Id = Guid.NewGuid();
@@ -24,9 +28,47 @@ namespace NSE.Carrinho.API.Model
 
         public CartCustomer() { }
 
+        public void ApplyVoucher(Voucher voucher) 
+        {
+            Voucher = voucher;
+            UsedVoucher = true;
+            CalculateCartPrice();
+        }
+
+        public void CalculateTotalValueDiscount()
+        {
+
+            //Verifica se algum voucher de desconto esta sendo utilizado
+            if (!UsedVoucher) return;
+
+            decimal discount = 0;
+            var value = TotalPrice;
+
+            if (Voucher.DiscountType == DiscountTypeVouhcer.Percentage)
+            {
+                if(Voucher.Percentage.HasValue)
+                {
+                    discount = (value * Voucher.Percentage.Value) / 100;
+                    value -= discount;
+                }
+            }
+            else
+            {
+                if (Voucher.DiscountValue.HasValue)
+                {
+                    discount = Voucher.DiscountValue.Value;
+                    value -= discount;
+                }
+            }
+
+            TotalPrice = value < 0 ? 0 : value;
+            Discount = discount;
+        }
+
         internal void CalculateCartPrice()
         {
             TotalPrice = Items.Sum(p => p.CalculatePrice());
+            CalculateTotalValueDiscount();
         }
 
         internal bool ExistingCartItem(CartItem item)

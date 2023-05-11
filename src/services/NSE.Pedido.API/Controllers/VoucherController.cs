@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NSE.Pedido.API.Application.DTO;
 using NSE.Pedido.API.Application.Queries;
 using NSE.WebAPI.Core.Controllers;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace NSE.Pedido.API.Controllers
 {
+    [Authorize]
     public class VoucherController : BaseController
     {
         public readonly IVoucherQueries _voucherQueries;

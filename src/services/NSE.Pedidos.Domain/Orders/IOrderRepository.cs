@@ -12,10 +12,8 @@ namespace NSE.Pedidos.Domain.Orders
         Task<IEnumerable<Order>> GetListByClientId(Guid clientId);
         void Add(Order order);
         void Update(Order order);
-
-        DbConnection GetConnection();
-
         Task<OrderItem> GetItemById(Guid id);
         Task<OrderItem> GetItemByOrder(Guid orderId, Guid productId);
+        DbConnection GetConnection();
     }
 }

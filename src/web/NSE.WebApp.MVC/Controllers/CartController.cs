@@ -10,7 +10,6 @@ namespace NSE.WebApp.MVC.Controllers
     {
         private readonly IPurchasingBffService _purchasinBffService;
 
-
         public CartController(IPurchasingBffService purchasinBffService)
         {
             _purchasinBffService = purchasinBffService;
@@ -24,7 +23,7 @@ namespace NSE.WebApp.MVC.Controllers
 
         [HttpPost]
         [Route("cart/add-item")]
-        public async Task<IActionResult> AddCartItem(ProductItemViewModel productItem)
+        public async Task<IActionResult> AddCartItem(ItemCartViewModel productItem)
         {
             var response = await _purchasinBffService.AddCartItem(productItem);
 
@@ -38,7 +37,7 @@ namespace NSE.WebApp.MVC.Controllers
         public async Task<IActionResult> UpdateCartItem(Guid productId, int quantity)
         {
 
-            var productItem = new ProductItemViewModel { ProductId = productId, Quantity = quantity };
+            var productItem = new ItemCartViewModel { ProductId = productId, Quantity = quantity };
             var response = await _purchasinBffService.UpdateCartItem(productId, productItem);
 
             if (HasErrorsResponse(response)) return View("Index", await _purchasinBffService.GetCart());
@@ -54,6 +53,17 @@ namespace NSE.WebApp.MVC.Controllers
             var response = await _purchasinBffService.RemoveCartItem(productId);
 
             if (HasErrorsResponse(response)) return View("Index", await _purchasinBffService.GetCart());
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Route("/cart/apply-voucher/")]
+        public async Task<IActionResult> ApplyVoucher(string voucherCode)
+        {
+            var response = await _purchasinBffService.ApplyVocuherCart(voucherCode);
+
+            if(HasErrorsResponse(response)) return View("Index", await _purchasinBffService.GetCart());
 
             return RedirectToAction("Index");
         }

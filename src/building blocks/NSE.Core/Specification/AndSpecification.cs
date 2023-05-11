@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NSE.Core.Specification
 {
@@ -23,7 +19,7 @@ namespace NSE.Core.Specification
             var leftExpression = _left.ToExpression();
             var rightExpression = _right.ToExpression();
 
-            var invokedExpression = Expression.Invoke(rightExpression, leftExpression);
+            var invokedExpression = Expression.Invoke(rightExpression, leftExpression.Parameters);
 
             return (Expression<Func<T, bool>>)Expression.Lambda(Expression.AndAlso(leftExpression.Body, invokedExpression), leftExpression.Parameters);
         }

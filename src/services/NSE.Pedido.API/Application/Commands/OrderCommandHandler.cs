@@ -39,7 +39,7 @@ namespace NSE.Pedido.API.Application.Commands
             if(!OrderValidate(order)) return ValidationResult;
 
             // Processar pagamento
-            if(ProcessPayment(order)) return ValidationResult;
+            if(!ProcessPayment(order)) return ValidationResult;
 
             // Se pagamento tudo okay
             order.AuthorizeOrder();
@@ -78,7 +78,7 @@ namespace NSE.Pedido.API.Application.Commands
 
         private async Task<bool> ApplyVoucher(AddOrderCommand request, Order order)
         {
-            if (request.VoucherUsed) return true;
+            if (!request.VoucherUsed) return true;
 
             var voucher = await _voucherRepository.GetVoucherByCode(request.VoucherCode);
             if(voucher == null)

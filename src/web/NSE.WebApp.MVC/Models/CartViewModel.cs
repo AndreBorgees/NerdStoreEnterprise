@@ -3,13 +3,16 @@ using System.Collections.Generic;
 
 namespace NSE.WebApp.MVC.Models
 {
-    public class CartItemViewModel
+    public class CartViewModel
     {
         public decimal TotalPrice { get; set; }
-        public List<ProductItemViewModel> Items { get; set; } = new List<ProductItemViewModel>();
+        public bool UsedVoucher { get; set; }
+        public decimal Discount { get; set; }
+        public VoucherViewModel Voucher { get; set; }
+        public List<ItemCartViewModel> Items { get; set; } = new List<ItemCartViewModel>();
     }
 
-    public class ProductItemViewModel
+    public class ItemCartViewModel
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; }

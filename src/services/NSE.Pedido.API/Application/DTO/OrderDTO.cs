@@ -15,7 +15,7 @@ namespace NSE.Pedido.API.Application.DTO
 
         public decimal Discount { get; set; }
         public string VoucherCode { get; set; }
-        public bool VoucherUsed { get; set; }
+        public bool UsedVoucher { get; set; }
 
         public List<OrderItemDTO> OrdemItems { get; set; }
         public AddressDTO Address { get; set; }
@@ -30,7 +30,7 @@ namespace NSE.Pedido.API.Application.DTO
                 RegistrationDate = order.RegistrationDate,
                 TotalValue = order.TotalValue,
                 Discount = order.Discount,
-                VoucherUsed = order.VoucherUsed,
+                UsedVoucher = order.UsedVoucher,
                 OrdemItems = new List<OrderItemDTO>(),
                 Address = new AddressDTO()
             };
