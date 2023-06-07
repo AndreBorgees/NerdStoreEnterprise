@@ -34,7 +34,7 @@ namespace NSE.Pedidos.Domain.Orders
             VoucherId = voucherId;
         }
 
-        public Order() { }
+        protected Order() { }
 
         public void AuthorizeOrder()
         {

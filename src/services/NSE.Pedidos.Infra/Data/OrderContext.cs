@@ -38,6 +38,7 @@ namespace NSE.Pedidos.Infra.Data
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderContext).Assembly);
 
+            // Cancelando exclusão em cascata
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
@@ -48,6 +49,8 @@ namespace NSE.Pedidos.Infra.Data
 
         public async Task<bool> Commit()
         {
+
+            // Se eu estiver cadastrando eu pegarei a data atual, caso for uma atualização esse campo não sofrera mudanças
             foreach (var entry in ChangeTracker.Entries()
                 .Where(entry => entry.Entity.GetType().GetProperty("RegistrationDate") != null))
             {

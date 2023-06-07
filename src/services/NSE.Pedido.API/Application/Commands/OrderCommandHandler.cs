@@ -66,8 +66,7 @@ namespace NSE.Pedido.API.Application.Commands
                 City = request.Address.City,
                 UF = request.Address.UF
             };
-
-            //ver aqui
+        
             var order = new Order(request.ClientId, request.TotalValue, request.OrderItems.Select(OrderItemDTO.ForOrderItem).ToList(),
                 request.VoucherUsed, request.Discount);
 

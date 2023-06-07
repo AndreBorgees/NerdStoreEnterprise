@@ -48,11 +48,11 @@ namespace NSE.Pedidos.Infra.Migrations
                     b.Property<decimal>("TotalValue")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("UsedVoucher")
+                        .HasColumnType("bit");
+
                     b.Property<Guid?>("VoucherId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("VoucherUsed")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

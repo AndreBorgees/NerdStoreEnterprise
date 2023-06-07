@@ -13,7 +13,8 @@ namespace NSE.Pedidos.Domain.Orders
         public string Image { get; set; }
         public Order Order { get; set; }
 
-        public OrderItem(Guid productId, string productName, int quantity, decimal value, string image)
+        public OrderItem(Guid productId, string productName, int quantity, 
+            decimal value, string image)
         {
             ProductId = productId;
             ProductName = productName;

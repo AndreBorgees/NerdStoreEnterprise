@@ -25,6 +25,7 @@ namespace NSE.Pedidos.Infra.Data.Repository
         {
             _context.Vouchers.Update(voucher);
         }
+
         public void Dispose()
         {
             _context.Dispose();
