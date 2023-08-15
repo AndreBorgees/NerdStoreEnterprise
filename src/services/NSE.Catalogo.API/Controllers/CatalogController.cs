@@ -19,7 +19,6 @@ namespace NSE.Catalogo.API.Controllers
             _productRepository = productRepository;
         }
 
-        [AllowAnonymous]
         [HttpGet("catalog/products")]
         public async Task<IEnumerable<Product>> GetAll()
         {
@@ -30,6 +29,12 @@ namespace NSE.Catalogo.API.Controllers
         public async Task<Product> GetById(Guid id)
         {
             return await _productRepository.GetById(id);
+        }
+
+        [HttpGet("catalog/products/list/{ids}")]
+        public async Task<IEnumerable<Product>> GetProdcutsById(string ids)
+        {
+            return await _productRepository.GetProdcutsById(ids);
         }
     }
 }

@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace NSE.Cliente.API.Application.Commands
 {
     public class CustomerCommandHandler : CommandHandler,
-        IRequestHandler<RegisterCustomerCommand, ValidationResult>
+        IRequestHandler<RegisterCustomerCommand, ValidationResult>,
+        IRequestHandler<AddAddressCommand, ValidationResult>
     {
 
         private readonly ICustomerRepository _customerRepository;
@@ -37,6 +38,16 @@ namespace NSE.Cliente.API.Application.Commands
             _customerRepository.Add(customer);
 
              customer.AddEvent(new RegisteredCustomerEvent(message.Id, message.Name, message.Email, message.Cpf));
+
+            return await PersistData(_customerRepository.UnitOfWork);
+        }
+
+        public async Task<ValidationResult> Handle(AddAddressCommand message, CancellationToken cancellationToken)
+        {
+            if (!message.IsValid()) return message.ValidationResult;
+
+            var address = new Address(message.Street, message.Number, message.Complement, message.District, message.PostalCode, message.City, message.State, message.CustomerId);
+            _customerRepository.AddAddress(address);
 
             return await PersistData(_customerRepository.UnitOfWork);
         }

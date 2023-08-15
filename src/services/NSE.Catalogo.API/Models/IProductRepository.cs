@@ -9,6 +9,7 @@ namespace NSE.Catalogo.API.Models
     {
         Task<IEnumerable<Product>> GetAll();
         Task<Product> GetById(Guid id);
+        Task<List<Product>> GetProdcutsById(string ids);
         void Add(Product product);
         void Update(Product product);
     }

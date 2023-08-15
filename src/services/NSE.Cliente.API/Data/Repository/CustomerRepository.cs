@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NSE.Cliente.API.Models;
 using NSE.Core.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,13 +25,23 @@ namespace NSE.Cliente.API.Data.Repository
 
         public void Dispose()
         {
-            //_customersContext?.Dispose();
+            _customersContext?.Dispose();
         }
 
         public Task<Customer> GetaByCpf(string cpf)
         {
             return _customersContext.Customers.FirstOrDefaultAsync(c => c.Cpf.Number == cpf);
          
+        }
+
+        public async Task<Address> GetAddressByUserId(Guid id)
+        {
+            return await _customersContext.Addresses.FirstOrDefaultAsync(e => e.CustomerId == id);
+        }
+
+        public void AddAddress(Address address)
+        {
+            _customersContext.Addresses.Add(address);
         }
 
         public async Task<IEnumerable<Customer>> Getall()

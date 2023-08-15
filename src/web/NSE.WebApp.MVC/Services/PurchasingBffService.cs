@@ -3,6 +3,7 @@ using NSE.Core.Comunication;
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,6 +17,11 @@ namespace NSE.WebApp.MVC.Services
         Task<ResponseResult> UpdateCartItem(Guid productId, ItemCartViewModel productItemViewModel);
         Task<ResponseResult> RemoveCartItem(Guid productId);
         Task<ResponseResult> ApplyVocuherCart(string voucher);
+
+        Task<ResponseResult> Checkout(OerderTransactionViewModel oerderTransactionViewModel);
+        Task<OrderViewModel> GetLastOrder();
+        Task<IEnumerable<OrderViewModel>> GetOrderByCustomerId();
+        OerderTransactionViewModel MapForOrder(CartViewModel cartViewModel, AddressViewModel addressViewModel);
     }
     public class PurchasingBffService : Service, IPurchasingBffService
     {
@@ -85,6 +91,63 @@ namespace NSE.WebApp.MVC.Services
             if (!HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
 
             return ReturnOk();
+        }
+
+        public async Task<ResponseResult> Checkout(OerderTransactionViewModel oerderTransactionViewModel)
+        {
+            var orderDTOContent = SeralizeHttpContent(oerderTransactionViewModel);
+
+            var response = await _httpClient.PostAsync("/purchasing/order/", orderDTOContent);
+
+            if(!HandleErrorsResponse(response)) return await DeserealizeObjectResponse<ResponseResult>(response);
+
+            return ReturnOk();
+        }
+
+        public async Task<OrderViewModel> GetLastOrder()
+        {
+            var response = await _httpClient.GetAsync("/purchasing/order/last/");
+
+            HandleErrorsResponse(response);
+
+            return await DeserealizeObjectResponse<OrderViewModel>(response);
+        }
+
+        public async Task<IEnumerable<OrderViewModel>> GetOrderByCustomerId()
+        {
+            var response = await _httpClient.GetAsync("/purchasing/order/get-customer/");
+
+            HandleErrorsResponse(response);
+
+            return await DeserealizeObjectResponse<IEnumerable<OrderViewModel>>(response);
+        }
+
+        public OerderTransactionViewModel MapForOrder(CartViewModel cartViewModel, AddressViewModel addressViewModel)
+        {
+            var order = new OerderTransactionViewModel
+            {
+                TotalValue = cartViewModel.TotalPrice,
+                OrderItems = cartViewModel.Items,
+                Discount = cartViewModel.Discount,
+                UsedVoucher = cartViewModel.UsedVoucher,
+                VoucherCode = cartViewModel.Voucher?.Code
+            };
+
+            if (addressViewModel != null)
+            {
+                order.Address = new AddressViewModel
+                {
+                    Street = addressViewModel.Street,
+                    Number = addressViewModel.Number,
+                    District = addressViewModel.District,
+                    PostalCode = addressViewModel.PostalCode,
+                    Complement = addressViewModel.Complement,
+                    City = addressViewModel.City,
+                    State = addressViewModel.State
+                };
+            }
+
+            return order;
         }
     }
 }

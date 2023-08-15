@@ -11,7 +11,7 @@ namespace NSE.Pedido.API.Application.Commands
         // Order
         public Guid ClientId { get; set; }
         public decimal TotalValue { get; set; }
-        public List<OrderItemDTO> OrderItems { get; set; }
+        public List<OrderItemDTO> OrderItems { get; set; } 
 
         // Voucher
         public string VoucherCode { get; set; }
@@ -24,8 +24,8 @@ namespace NSE.Pedido.API.Application.Commands
         // Card
         public string CardNumber { get; set; }
         public string CardName { get; set; }
-        public string CardExpiring { get; set; }
-        public string CardCvv { get; set; }
+        public string CardExpiration { get; set; }
+        public string CardSecurity { get; set; }
 
         public override bool IsValid()
         {
@@ -57,12 +57,12 @@ namespace NSE.Pedido.API.Application.Commands
                   .NotNull()
                   .WithMessage("Nome do portador do cartão requerido.");
 
-                RuleFor(c => c.CardCvv.Length)
+                RuleFor(c => c.CardSecurity.Length)
                   .GreaterThan(2)
                   .LessThan(5)
                   .WithMessage("O CVV do cartão precisa ter 3 ou 4 números.");
 
-                RuleFor(c => c.CardExpiring)
+                RuleFor(c => c.CardExpiration)
                  .NotNull()
                  .WithMessage("Data expiração do cartão requerida.");
             }

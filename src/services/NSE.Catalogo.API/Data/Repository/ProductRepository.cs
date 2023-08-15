@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.WebEncoders.Testing;
 using NSE.Catalogo.API.Models;
 using NSE.Core.Data;
+using Polly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NSE.Catalogo.API.Data.Repository
@@ -28,6 +31,21 @@ namespace NSE.Catalogo.API.Data.Repository
             return await _catalogContext.Products.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<Product>> GetProdcutsById(string ids)
+        {
+            var idsGuid = ids.Split(',')
+               .Select(id => (Ok: Guid.TryParse(id, out var x), Value: x));
+
+            if (!idsGuid.All(nid => nid.Ok)) return new List<Product>();
+
+            var idsValue = idsGuid.Select(id => id.Value);
+
+            var teste = await _catalogContext.Products.AsNoTracking()
+                .Where(p => idsValue.Contains(p.Id) && p.Active).ToListAsync();
+
+            return teste;
+        }
+
         public void Add(Product product)
         {
             _catalogContext.Products.Add(product);
@@ -42,6 +60,5 @@ namespace NSE.Catalogo.API.Data.Repository
         {
             _catalogContext?.Dispose();
         }
-
     }
 }

@@ -24,6 +24,11 @@ namespace NSE.WebApp.MVC.Extensions
             return value > 0 ? string.Format(Thread.CurrentThread.CurrentCulture, "{0:C}", value) : "Gratuito";
         }
 
+        private static string FormatCoin(decimal value)
+        {
+            return string.Format(Thread.CurrentThread.CurrentCulture, "{0:C}", value);
+        }
+
         public static string StockMessage(this RazorPage page, int quantity)
         {
             return quantity > 0 ? $"Apenas {quantity} em estoque!" : "Produto esgotado!";
@@ -32,6 +37,11 @@ namespace NSE.WebApp.MVC.Extensions
         public static string UnitsPerProduct(this RazorPage page, int units)
         {
             return units > 1 ? $"{units} unidades" : $"{units} unidade";
+        }
+
+        public static string UnitsPerProductTotalValue(this RazorPage page, int units, decimal value)
+        {
+            return $"{units}x {FormatCoin(value)} = Total: {FormatCoin(value * units)}";
         }
 
         public static string SelectOptionsPerQuantiry(this RazorPage page, int quantity, int selectedValue = 0)
@@ -45,6 +55,38 @@ namespace NSE.WebApp.MVC.Extensions
             }
 
             return sb.ToString();
+        }
+
+        public static string ShowStatus(this RazorPage page, int status) 
+        { 
+            var statusMessage = "";
+            var statusClass = "";
+
+            switch (status) 
+            {
+                case 1:
+                    statusClass = "info";
+                    statusMessage = "Em aprovação";
+                    break;
+                case 2:
+                    statusClass = "primary";
+                    statusMessage = "Aprovado";
+                    break;
+                case 3:
+                    statusClass = "danger";
+                    statusMessage = "Recusado";
+                    break;
+                case 4:
+                    statusClass = "success";
+                    statusMessage = "Entregue";
+                    break;
+                case 5:
+                    statusClass = "warning";
+                    statusMessage = "Cancelado";
+                    break;
+            }
+
+            return $"<span class='badge badge-{statusClass}'>{statusMessage}</span>";
         }
     }
 }

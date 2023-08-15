@@ -11,7 +11,7 @@ namespace NSE.Pedidos.Domain.Orders
         public int Code { get; private set; }
         public Guid ClientId { get; private set; }
         public Guid? VoucherId { get; private set; }
-        public bool UsedVoucher { get; private set; }
+        public bool VoucherUsed { get; private set; }
         public decimal Discount { get; private set; }
         public decimal TotalValue { get; private set; }
         public DateTime RegistrationDate { get; private set; }
@@ -30,7 +30,7 @@ namespace NSE.Pedidos.Domain.Orders
             TotalValue = totalValue;
             _orderItems = orderItems;
             Discount = discount;
-            UsedVoucher = usedVoucher;
+            VoucherUsed = usedVoucher;
             VoucherId = voucherId;
         }
 
@@ -43,7 +43,7 @@ namespace NSE.Pedidos.Domain.Orders
 
         public void AddVoucher(Voucher voucher)
         {
-            UsedVoucher = true;
+            VoucherUsed = true;
             VoucherId = voucher.Id;
             Voucher = voucher;
         }
@@ -61,7 +61,7 @@ namespace NSE.Pedidos.Domain.Orders
 
         private void CalculateDiscountAmount()
         {
-            if (!UsedVoucher) return;
+            if (!VoucherUsed) return;
 
             decimal discount = 0;
             var value = TotalValue;

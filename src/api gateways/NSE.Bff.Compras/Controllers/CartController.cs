@@ -26,6 +26,7 @@ namespace NSE.Bff.Compras.Controllers
             _orderService = orderService;
         }
 
+        [AllowAnonymous] 
         [HttpGet]
         [Route("purchasing/cart")]
         public async Task<IActionResult> Index()

@@ -46,6 +46,12 @@ namespace NSE.WebApp.MVC.Configuration
                .AddTransientHttpErrorPolicy(
                 p => p.CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30)));
 
+            services.AddHttpClient<ICustomerService, CustomerService>()
+               .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+               .AddPolicyHandler(PollyExtensions.WaitTry())
+               .AddTransientHttpErrorPolicy(
+                   p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
             #region Refit
             //services.AddHttpClient("Refit", options =>
             //{

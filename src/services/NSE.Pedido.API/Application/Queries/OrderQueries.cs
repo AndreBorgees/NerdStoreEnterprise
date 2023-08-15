@@ -26,15 +26,30 @@ namespace NSE.Pedido.API.Application.Queries
         public async Task<OrderDTO> GetLastOrder(Guid clientId)
         {
             const string sql = @"SELECT
-                                    O.ID AS 'ProductId', O.CODE, O.VOUCHERUSED, O.DISCOUNT, O.TOTALVALUE, O.STATUS, O.STREET, O.NUMBER, O.DISTRICT, 
-                                    O.POSTALCODE, O.COMPLEMENT, O.CITY, O.UF, 
-                                    OIT.ORDERID AS 'ProductItemId', OIT.NAME,  OIT.QUANTITY, OIT.IMAGE, OIT.VALUE
-                                FROM Order O
-                                INNER JOIN ORDERITENS OIT ON O.ID = OIT.ORDERID
-                                WHERE O.CLIENTID = @clientid
+                                    O.ID AS 'ProductId',
+	                                O.CODE, 
+	                                O.VOUCHERUSED, 
+	                                O.DISCOUNT, 
+	                                O.TOTALVALUE, 
+	                                O.ORDERSTATUS, 
+	                                O.STREET, 
+	                                O.NUMBER, 
+	                                O.DISTRICT, 
+                                    O.POSTALCODE, 
+	                                O.COMPLEMENT, 
+	                                O.CITY, 
+                                    O.UF,
+                                    OIT.ORDERID AS 'ProductItemId', 
+	                                OIT.PRODUCTNAME,  
+	                                OIT.QUANTITY, 
+	                                OIT.IMAGE, 
+	                                OIT.VALUE
+                                FROM Orders O
+                                INNER JOIN ORDERITEMS OIT ON O.ID = OIT.ORDERID
+                                WHERE O.CLIENTID = @clientId
                                 AND O.REGISTRATIONDATE BETWEEN DATEADD(minute, -3,  GETDATE()) and DATEADD(minute, 0,  GETDATE())
-                                AND O.STATUS = 1
-                                ORDER BY O.DATE DESC";
+                                AND O.ORDERSTATUS = 1
+                                ORDER BY O.REGISTRATIONDATE DESC";
 
             var order = await _orderRepostiroy.GetConnection()
                 .QueryAsync<dynamic>(sql, new { clientId });
@@ -54,20 +69,20 @@ namespace NSE.Pedido.API.Application.Queries
             var order = new OrderDTO
             {
                 Code = result[0].CODE,
-                Status = result[0].TOTALVALUE,
+                Status = result[0].ORDERSTATUS,
                 TotalValue = result[0].TOTALVALUE,
                 Discount = result[0].DISCOUNT,
                 UsedVoucher = result[0].VOUCHERUSED,
 
-                OrdemItems = new List<OrderItemDTO>(),
+                OrderItems = new List<OrderItemDTO>(),
                 Address = new AddressDTO
                 {
                     Street = result[0].STREET,
                     District = result[0].DISTRICT,
-                    PostalCode = result[0].POSTALCODE,
+                    Cep = result[0].POSTALCODE,
                     City = result[0].CITY,
                     Complement = result[0].COMPLEMENT,
-                    UF = result[0].UF,
+                    State = result[0].UF,
                     Number = result[0].NUMBER
                 }
             };
@@ -76,13 +91,13 @@ namespace NSE.Pedido.API.Application.Queries
             {
                 var orderItem = new OrderItemDTO
                 {
-                    Name = item.NAME,
-                    Value = item.VALUE,
+                    Name = item.PRODUCTNAME,
+                    Price = item.VALUE,
                     Quantity = item.QUANTITY,
                     Image = item.IMAGE
                 };
 
-                order.OrdemItems.Add(orderItem);
+                order.OrderItems.Add(orderItem);
             }
 
             return order;

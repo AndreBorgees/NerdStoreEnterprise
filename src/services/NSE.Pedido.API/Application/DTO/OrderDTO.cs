@@ -17,7 +17,7 @@ namespace NSE.Pedido.API.Application.DTO
         public string VoucherCode { get; set; }
         public bool UsedVoucher { get; set; }
 
-        public List<OrderItemDTO> OrdemItems { get; set; }
+        public List<OrderItemDTO> OrderItems { get; set; }
         public AddressDTO Address { get; set; }
 
         public static OrderDTO ForOrderDTO(Order order)
@@ -30,20 +30,20 @@ namespace NSE.Pedido.API.Application.DTO
                 RegistrationDate = order.RegistrationDate,
                 TotalValue = order.TotalValue,
                 Discount = order.Discount,
-                UsedVoucher = order.UsedVoucher,
-                OrdemItems = new List<OrderItemDTO>(),
+                UsedVoucher = order.VoucherUsed,
+                OrderItems = new List<OrderItemDTO>(),
                 Address = new AddressDTO()
             };
 
             foreach (var item in order.OrderItems)
             {
-                orderDTO.OrdemItems.Add(new OrderItemDTO
+                orderDTO.OrderItems.Add(new OrderItemDTO
                 {
                     Name = item.ProductName,
                     Image = item.Image,
                     Quantity = item.Quantity,
                     ProductId = item.ProductId,
-                    Value = item.Value,
+                    Price = item.Value,
                     OrderId = item.OrderId
                 });
             }
@@ -54,9 +54,9 @@ namespace NSE.Pedido.API.Application.DTO
                 Number = order.Address.Number,
                 Complement = order.Address.Complement,
                 District = order.Address.District,
-                PostalCode = order.Address.PostalCode,
+                Cep = order.Address.PostalCode,
                 City = order.Address.City,
-                UF = order.Address.UF,
+                State = order.Address.UF,
             };
 
             return orderDTO;

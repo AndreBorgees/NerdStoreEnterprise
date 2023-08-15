@@ -62,9 +62,9 @@ namespace NSE.Pedido.API.Application.Commands
                 Number = request.Address.Number,
                 Complement = request.Address.Complement,
                 District = request.Address.District,
-                PostalCode = request.Address.PostalCode,
+                PostalCode = request.Address.Cep,    
                 City = request.Address.City,
-                UF = request.Address.UF
+                UF = request.Address.State
             };
         
             var order = new Order(request.ClientId, request.TotalValue, request.OrderItems.Select(OrderItemDTO.ForOrderItem).ToList(),
